@@ -40,29 +40,36 @@ function buildCredential() {
     if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
       return admin.credential.applicationDefault();
     }
-    throw new Error(
-      `GOOGLE_APPLICATION_CREDENTIALS points to a file that does not exist: ` +
-      process.env.GOOGLE_APPLICATION_CREDENTIALS
-    );
+    // File not found on this machine — silently skip
   }
 
   throw new Error(
     'Firebase credentials missing. Set FIREBASE_PROJECT_ID + FIREBASE_CLIENT_EMAIL + ' +
-    'FIREBASE_PRIVATE_KEY in your environment variables.'
+    'FIREBASE_PRIVATE_KEY in your Render environment variables.'
   );
 }
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: buildCredential(),
-    projectId:
-      process.env.FIREBASE_PROJECT_ID ||
-      (process.env.FIREBASE_SERVICE_ACCOUNT &&
-        JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT).project_id),
-  });
-}
+let firestore;
 
-const firestore = admin.firestore();
-firestore.settings({ ignoreUndefinedProperties: true });
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: buildCredential(),
+      projectId:
+        process.env.FIREBASE_PROJECT_ID ||
+        (process.env.FIREBASE_SERVICE_ACCOUNT &&
+          JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT).project_id),
+    });
+    firestore = admin.firestore();
+    firestore.settings({ ignoreUndefinedProperties: true });
+  } catch (err) {
+    console.error('[firebase] INIT FAILED:', err.message);
+    console.error('[firebase] Check FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY in environment variables.');
+    firestore = null;
+  }
+} else {
+  firestore = admin.firestore();
+  firestore.settings({ ignoreUndefinedProperties: true });
+}
 
 module.exports = { admin, firestore };
