@@ -1,4 +1,4 @@
-const db = require('../db');
+const { col, now } = require('../db');
 
 function requireAuth(req, res, next) {
   if (!req.session.user) {
@@ -17,20 +17,33 @@ function requireRole(...roles) {
   };
 }
 
+// Fire-and-forget audit log — never block or throw into the request path.
 function logActivity(userId, action, entity, entityId, details, ip) {
-  try {
-    db.prepare(
-      `INSERT INTO activity_logs (user_id, action, entity, entity_id, details, ip_address)
-       VALUES (?, ?, ?, ?, ?, ?)`
-    ).run(userId || null, action, entity || null, entityId || null, details || null, ip || null);
-  } catch (_) { /* non-critical */ }
+  col.activityLogs
+    .add({
+      user_id:    userId || null,
+      action,
+      entity:     entity || null,
+      entity_id:  entityId || null,
+      details:    details || null,
+      ip_address: ip || null,
+      created_at: now(),
+    })
+    .catch(() => { /* non-critical */ });
 }
 
-// Paginate helper: returns { rows, total, page, per_page, pages }
-function paginate(sql, countSql, args, page, perPage) {
-  const total = db.prepare(countSql).get(...args)?.c || 0;
-  const offset = (page - 1) * perPage;
-  const rows   = db.prepare(sql + ` LIMIT ? OFFSET ?`).all(...args, perPage, offset);
+// Simple async paginator for a Firestore Query.
+// Usage: await paginate(col.users.where('role','==','student').orderBy('created_at','desc'), page, perPage)
+async function paginate(query, page, perPage) {
+  page    = Math.max(1, parseInt(page,    10) || 1);
+  perPage = Math.max(1, parseInt(perPage, 10) || 20);
+
+  const totalSnap = await query.count().get();
+  const total = totalSnap.data().count;
+
+  const pageSnap = await query.offset((page - 1) * perPage).limit(perPage).get();
+  const rows = pageSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
   return { rows, total, page, per_page: perPage, pages: Math.ceil(total / perPage) };
 }
 

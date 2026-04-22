@@ -2,5 +2,11 @@ node_modules/
 data/
 *.log
 .env
+.env.local
+.env.test
 .DS_Store
 .vercel
+
+# Firebase service-account JSON should never be committed
+*firebase-adminsdk*.json
+serviceAccount*.json

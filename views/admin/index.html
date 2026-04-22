@@ -130,7 +130,14 @@ const API = async (url, opts={}) => {
   return j;
 };
 const fmt = v => v == null ? '—' : v;
-const fmtDate = d => d ? d.split('T')[0] : '—';
+const fmtDate = d => {
+  if (!d) return '—';
+  // Firestore timestamp object
+  if (d._seconds) return new Date(d._seconds * 1000).toISOString().split('T')[0];
+  if (d.seconds)  return new Date(d.seconds  * 1000).toISOString().split('T')[0];
+  // Plain string or Date
+  return String(d).split('T')[0];
+};
 const badge = (text, type='gray') => `<span class="badge ${type}">${text}</span>`;
 const statusBadge = s => {
   const m = {active:'green',open:'green',published:'green',paid:'green',PAID:'green',

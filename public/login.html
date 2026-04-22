@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JJMMC Medical College · Sign in</title>
 
-  <!-- PWA metadata (same as landing page so bookmark-from-login works too) -->
+  <!-- PWA metadata -->
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="theme-color" content="#0b5240" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -45,27 +45,25 @@
       </div>
 
       <div class="field">
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="Enter your username" required />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Enter your email address" required autocomplete="email" />
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" placeholder="Password" required />
+        <input id="password" name="password" type="password" placeholder="Password" required autocomplete="current-password" />
       </div>
 
-      <button class="btn" type="submit">Sign in</button>
+      <button class="btn" type="submit" id="submitBtn">Sign in</button>
       <div id="msg" class="msg"></div>
-
-      <div class="hint">
-        Demo accounts (password = username + <code>123</code>):<br/>
-        <strong>UG</strong> · <code>admin</code> · <code>principal</code> · <code>faculty</code> · <code>student</code> · <code>parent</code><br/>
-        <strong>PG</strong> · <code>adminpg</code> · <code>principalpg</code> · <code>facultypg</code> · <code>studentpg</code> · <code>parentpg</code>
-      </div>
     </form>
   </div>
 
+  <!-- Firebase JS SDK (compat v9 — drop-in replacement for v8 API) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
   <script>
-    // UG / PG segmented toggle
+    // UG / PG toggle
     const programInput = document.getElementById('program');
     document.querySelectorAll('.program-opt').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -79,27 +77,65 @@
       });
     });
 
+    let firebaseAuth = null;
+
+    // Fetch Firebase public config from the server, then initialise the SDK.
+    async function initFirebase() {
+      const config = await fetch('/api/firebase-config').then((r) => r.json());
+      if (!config.apiKey) throw new Error('Firebase is not configured yet. Contact your administrator.');
+      firebase.initializeApp(config);
+      firebaseAuth = firebase.auth();
+    }
+
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const msg = document.getElementById('msg');
-      msg.textContent = ''; msg.className = 'msg';
-      const username = document.getElementById('username').value.trim();
+      const msg       = document.getElementById('msg');
+      const submitBtn = document.getElementById('submitBtn');
+      msg.textContent = '';
+      msg.className   = 'msg';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in…';
+
+      const email   = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const program  = programInput.value;
+
       try {
-        const res = await fetch('/api/login', {
-          method: 'POST',
+        // Initialise Firebase on first submit (lazy, avoids blocking page load).
+        if (!firebaseAuth) await initFirebase();
+
+        // Sign in with Firebase Authentication to get an ID token.
+        const credential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+        const idToken    = await credential.user.getIdToken();
+
+        // Exchange the ID token for a server session.
+        const res  = await fetch('/api/login', {
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password, program })
+          body:    JSON.stringify({ idToken, program }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Login failed');
+
         msg.textContent = 'Signed in. Redirecting…';
         msg.classList.add('ok');
         window.location.href = data.redirect;
       } catch (err) {
-        msg.textContent = err.message;
+        // Map Firebase auth errors to friendly messages.
+        let message = err.message || 'Login failed';
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' ||
+            err.code === 'auth/invalid-credential') {
+          message = 'Invalid email or password.';
+        } else if (err.code === 'auth/too-many-requests') {
+          message = 'Too many failed attempts. Try again later.';
+        } else if (err.code === 'auth/network-request-failed') {
+          message = 'Network error. Check your connection.';
+        }
+        msg.textContent = message;
         msg.classList.add('err');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign in';
       }
     });
   </script>

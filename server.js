@@ -1,7 +1,8 @@
+require('dotenv').config();
 const path    = require('path');
 const express = require('express');
 const session = require('express-session');
-require('./db'); // initialise DB + seed
+const db      = require('./db'); // Firestore handle + seed()
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +17,7 @@ app.use(session({
 }));
 
 // ── ROUTES ────────────────────────────────────────────────────────
-app.use('/api', require('./routes/auth'));
+app.use('/api',           require('./routes/auth'));
 app.use('/api/admin',     require('./routes/admin'));
 app.use('/api/faculty',   require('./routes/faculty'));
 app.use('/api/student',   require('./routes/student'));
@@ -57,10 +58,6 @@ app.use('/student-pg',   rolePage('student',   'PG'), express.static(path.join(_
 app.use('/parent-pg',    rolePage('parent',    'PG'), express.static(path.join(__dirname, 'views', 'parent-pg')));
 
 // ── PUBLIC ────────────────────────────────────────────────────────
-// Root route: logged-in users go to their portal. Guests see the landing
-// page (public/index.html). Registering this BEFORE express.static prevents
-// the static middleware from auto-serving index.html to already-authenticated
-// users (which would briefly flash the landing before the client JS realises).
 app.get('/', (req, res) => {
   if (req.session.user) {
     const prog = (req.session.user.program || 'UG') === 'PG' ? '-pg' : '';
@@ -77,13 +74,27 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
+// ── BOOTSTRAP ─────────────────────────────────────────────────────
+// Seed default users into Firestore on first boot. We log but don't crash
+// if the seed fails — the server should still come up so the operator can
+// inspect the error on the login page.
+const ready = db.seed()
+  .then((r) => {
+    if (r.seeded) console.log(`[seed] inserted ${r.seeded} default users into Firestore`);
+    else          console.log(`[seed] ${r.skipped}`);
+  })
+  .catch((err) => {
+    console.error('[seed] failed — check Firebase credentials in .env');
+    console.error(err.message);
+  });
+
 // Only start an HTTP listener when run directly (local dev).
 // On Vercel, this file is imported and `app` is exported to the serverless runtime.
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`\n  JJMMC ERP  →  http://localhost:${PORT}\n`);
-    console.log('  Logins:  admin/admin123  |  principal/principal123');
-    console.log('           faculty/faculty123  |  student/student123  |  parent/parent123\n');
+  ready.finally(() => {
+    app.listen(PORT, () => {
+      console.log(`\n  JJMMC ERP  →  http://localhost:${PORT}\n`);
+    });
   });
 }
 
