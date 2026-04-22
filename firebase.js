@@ -11,9 +11,13 @@ require('dotenv').config();
 const admin = require('firebase-admin');
 
 function buildCredential() {
-  // Option 1: path to a service-account JSON file on disk
+  // Option 1: path to a service-account JSON file on disk (local dev only)
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    return admin.credential.applicationDefault();
+    const fs = require('fs');
+    if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
+      return admin.credential.applicationDefault();
+    }
+    // File doesn't exist (e.g. on a remote server) — fall through to next option
   }
 
   // Option 2: the entire JSON pasted into a single env var
