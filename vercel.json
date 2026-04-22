@@ -4,7 +4,7 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["views/**", "public/**", "routes/**", "db.js"] }
+      "config": { "includeFiles": ["views/**", "public/**", "routes/**", "db.js", "firebase.js"] }
     }
   ],
   "routes": [

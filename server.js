@@ -1,7 +1,7 @@
 require('dotenv').config();
 const path    = require('path');
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const db      = require('./db'); // Firestore handle + seed()
 
 const app  = express();
@@ -9,11 +9,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(session({
+app.use(cookieSession({
+  name:   'jjmmc.sess',
   secret: process.env.SESSION_SECRET || 'jjmmc-erp-dev-secret-change-me',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 8 },
+  maxAge: 1000 * 60 * 60 * 8, // 8 hours
+  httpOnly: true,
+  secure:   process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
 }));
 
 // ── ROUTES ────────────────────────────────────────────────────────

@@ -83,10 +83,9 @@ router.post('/login', wrap(async (req, res) => {
 // ---------------------------------------------------------------------------
 router.post('/logout', (req, res) => {
   const uid = req.session?.user?.id;
-  req.session.destroy(() => {
-    if (uid) logActivity(uid, 'LOGOUT', 'users', uid, 'User logged out');
-    res.json({ ok: true });
-  });
+  req.session = null;
+  if (uid) logActivity(uid, 'LOGOUT', 'users', uid, 'User logged out');
+  res.json({ ok: true });
 });
 
 // ---------------------------------------------------------------------------
