@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JJMMC ERP · Parent</title>
+<title>JJMMC ERP Â· Parent</title>
 <link rel="stylesheet" href="/css/style.css"/>
 <style>
 /* Parent portal page-specific overrides (global UI in style.css) */
@@ -16,7 +16,7 @@
     <div class="brand-logo">JJ</div>
     <div>
       <h1 style="font-size:14px">Parent Portal <span class="prog-badge prog-badge-ug">UG</span></h1>
-      <small>JJMMC · UG Ward</small>
+      <small>JJMMC Â· UG Ward</small>
     </div>
   </div>
   <nav class="nav" id="sideNav">
@@ -44,7 +44,7 @@
       <button class="btn small secondary" id="logoutBtn">Logout</button>
     </div>
   </div>
-  <div class="content" id="appContent"><div class="empty-msg">Loading…</div></div>
+  <div class="content" id="appContent"><div class="empty-msg">Loadingâ€¦</div></div>
 </section>
 </div>
 <script>
@@ -55,8 +55,8 @@ const API = async (url,opts={}) => {
   if(!r.ok){alert(j.error||'Error');throw new Error(j.error);}
   return j;
 };
-const fmt=v=>v==null?'—':v;
-const fmtDate=d=>d?d.split('T')[0]:'—';
+const fmt=v=>v==null?'â€”':v;
+const fmtDate=d=>d?d.split('T')[0]:'â€”';
 const badge=(t,c='gray')=>`<span class="badge ${c}">${t}</span>`;
 const pctColor=p=>p>=75?'#34A853':p>=60?'#FBBC04':'#EA4335';
 
@@ -87,7 +87,7 @@ sections.dashboard = async c => {
     <div class="grid cols-2" style="margin-bottom:14px">
       <div class="card">
         <div class="sub">Total Fees Paid</div>
-        <div style="font-size:28px;font-weight:500;color:var(--success)">₹${(d.total_fees_paid||0).toLocaleString()}</div>
+        <div style="font-size:28px;font-weight:500;color:var(--success)">â‚¹${(d.total_fees_paid||0).toLocaleString()}</div>
       </div>
       <div class="card">
         <h3 style="margin:0 0 10px;font-size:14px">Attendance Summary</h3>
@@ -113,10 +113,10 @@ sections.ward = async c => {
     <div class="page-title"><h2>Ward Profile</h2></div>
     <div class="card">
       <div class="grid cols-3">
-        ${[['Full Name',w?.full_name],['Email',w?.email||'—'],['Roll No',w?.roll_no||'—'],
-           ['Department',w?.department||'—'],['Semester',w?.semester||'—'],['Phone',w?.phone||'—'],
-           ['Date of Birth',w?.dob||'—'],['Blood Group',w?.blood_group||'—'],['Address',w?.address||'—'],
-           ['Parent Name',w?.parent_name||'—'],['Parent Phone',w?.parent_phone||'—']
+        ${[['Full Name',w?.full_name],['Email',w?.email||'â€”'],['Roll No',w?.roll_no||'â€”'],
+           ['Department',w?.department||'â€”'],['Semester',w?.semester||'â€”'],['Phone',w?.phone||'â€”'],
+           ['Date of Birth',w?.dob||'â€”'],['Blood Group',w?.blood_group||'â€”'],['Address',w?.address||'â€”'],
+           ['Parent Name',w?.parent_name||'â€”'],['Parent Phone',w?.parent_phone||'â€”']
         ].map(([l,v])=>`<div class="card" style="padding:12px"><div class="sub">${l}</div><div style="font-weight:600">${v}</div></div>`).join('')}
       </div>
     </div>`;
@@ -148,11 +148,11 @@ sections.fees = async c => {
     <div class="page-title"><h2>Fee Payments</h2></div>
     <div class="card" style="margin-bottom:14px">
       <div class="sub">Total Fees Paid</div>
-      <div style="font-size:32px;font-weight:500;color:var(--success)">₹${(d.total_paid||0).toLocaleString()}</div>
+      <div style="font-size:32px;font-weight:500;color:var(--success)">â‚¹${(d.total_paid||0).toLocaleString()}</div>
     </div>
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Fee Type</th><th>Amount</th><th>Status</th><th>Reference</th><th>Date</th></tr></thead>
-    <tbody>${d.payments.map(p=>`<tr><td>${p.fee_type}</td><td>₹${p.amount?.toLocaleString()}</td>
+    <tbody>${d.payments.map(p=>`<tr><td>${p.fee_type}</td><td>â‚¹${p.amount?.toLocaleString()}</td>
       <td>${p.status==='PAID'?badge('Paid','green'):badge(p.status,'yellow')}</td>
       <td>${fmt(p.reference)}</td><td>${fmtDate(p.paid_on)}</td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty-msg">No payments</td></tr>'}
@@ -202,7 +202,7 @@ sections.notifications = async c => {
 };
 
 function loadSection(sec){
-  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loading…</div>';
+  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loadingâ€¦</div>';
   const fn=sections[sec];if(fn)fn(c);else c.innerHTML=`<div class="empty-msg">${sec} coming soon.</div>`;
 }
 fetch('/api/me').then(r=>r.json()).then(d=>{
@@ -213,5 +213,6 @@ fetch('/api/me').then(r=>r.json()).then(d=>{
 $('logoutBtn').addEventListener('click',async()=>{ await fetch('/api/logout',{method:'POST'}); location.href='/login.html'; });
 loadSection('dashboard');
 </script>
-</body>
+<script src="/js/mobile.js"></script></body>
 </html>
+

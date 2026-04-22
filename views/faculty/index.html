@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JJMMC Medical College · Faculty</title>
+<title>JJMMC Medical College Â· Faculty</title>
 <link rel="stylesheet" href="/css/style.css"/>
 <style>
 /* Faculty portal page-specific overrides (global UI in style.css) */
@@ -16,7 +16,7 @@
     <div class="brand-logo">JJ</div>
     <div>
       <h1 style="font-size:14px">Faculty Portal <span class="prog-badge prog-badge-ug">UG</span></h1>
-      <small>JJMMC · UG Teaching Faculty</small>
+      <small>JJMMC Â· UG Teaching Faculty</small>
     </div>
   </div>
   <nav class="nav" id="sideNav">
@@ -55,7 +55,7 @@
       <button class="btn small secondary" id="logoutBtn">Logout</button>
     </div>
   </div>
-  <div class="content" id="appContent"><div class="empty-msg">Loading…</div></div>
+  <div class="content" id="appContent"><div class="empty-msg">Loadingâ€¦</div></div>
 </section>
 </div>
 <div class="modal-overlay" id="modalOverlay">
@@ -76,8 +76,8 @@ const API = async (url, opts={}) => {
   if (!r.ok) { alert(j.error||'Error'); throw new Error(j.error); }
   return j;
 };
-const fmt = v => v==null?'—':v;
-const fmtDate = d => d?d.split('T')[0]:'—';
+const fmt = v => v==null?'â€”':v;
+const fmtDate = d => d?d.split('T')[0]:'â€”';
 const badge = (t,c='gray') => `<span class="badge ${c}">${t}</span>`;
 const statusBadge = s => {
   const m={present:'green',absent:'red',late:'yellow',published:'green',draft:'yellow',submitted:'green','in-progress':'blue'};
@@ -104,21 +104,21 @@ const sections={};
 sections.dashboard = async c => {
   const d = await API('/api/faculty/stats');
   c.innerHTML=`
-    <div class="page-title"><h2>My Week</h2><p style="color:var(--muted);font-size:13px;margin:4px 0 0">JJMMC Medical College · Faculty Dashboard</p></div>
+    <div class="page-title"><h2>My Week</h2><p style="color:var(--muted);font-size:13px;margin:4px 0 0">JJMMC Medical College Â· Faculty Dashboard</p></div>
     <div class="stat-cards">
-      <div class="stat-card"><div class="label">📚 Lectures Today</div><div class="value">${d.my_lectures_today}</div></div>
-      <div class="stat-card"><div class="label">📖 Total Lectures</div><div class="value">${d.total_lectures}</div></div>
-      <div class="stat-card"><div class="label">📝 Online Exams</div><div class="value">${d.my_online_exams}</div></div>
-      <div class="stat-card"><div class="label">📎 Study Materials</div><div class="value">${d.study_materials}</div></div>
-      <div class="stat-card"><div class="label">🩺 Active Postings</div><div class="value" style="color:var(--primary)">${d.active_postings||0}</div></div>
-      <div class="stat-card"><div class="label">📋 Pending Case Logs</div><div class="value" style="color:var(--warning)">${d.pending_case_logs||0}</div></div>
-      <div class="stat-card"><div class="label">🔧 Pending Procedures</div><div class="value" style="color:var(--warning)">${d.pending_proc_logs||0}</div></div>
-      <div class="stat-card"><div class="label">🎓 LMS Courses</div><div class="value">${d.my_lms_courses||0}</div></div>
+      <div class="stat-card"><div class="label">ðŸ“š Lectures Today</div><div class="value">${d.my_lectures_today}</div></div>
+      <div class="stat-card"><div class="label">ðŸ“– Total Lectures</div><div class="value">${d.total_lectures}</div></div>
+      <div class="stat-card"><div class="label">ðŸ“ Online Exams</div><div class="value">${d.my_online_exams}</div></div>
+      <div class="stat-card"><div class="label">ðŸ“Ž Study Materials</div><div class="value">${d.study_materials}</div></div>
+      <div class="stat-card"><div class="label">ðŸ©º Active Postings</div><div class="value" style="color:var(--primary)">${d.active_postings||0}</div></div>
+      <div class="stat-card"><div class="label">ðŸ“‹ Pending Case Logs</div><div class="value" style="color:var(--warning)">${d.pending_case_logs||0}</div></div>
+      <div class="stat-card"><div class="label">ðŸ”§ Pending Procedures</div><div class="value" style="color:var(--warning)">${d.pending_proc_logs||0}</div></div>
+      <div class="stat-card"><div class="label">ðŸŽ“ LMS Courses</div><div class="value">${d.my_lms_courses||0}</div></div>
     </div>
     ${(d.pending_case_logs||d.pending_proc_logs)?'<div class="alert warning">You have logbook entries awaiting verification. Please review them under Clinical (Medical) &gt; Verify Case / Procedure Logs.</div>':''}
     <div class="card" style="margin-top:14px">
       <h3 style="margin:0 0 10px;font-size:14px">Recent Notices</h3>
-      ${d.recent_notices.length?d.recent_notices.map(n=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)"><strong>${n.title}</strong><br><span style="font-size:12px;color:var(--muted)">${fmtDate(n.created_at)} · ${n.audience}</span></div>`).join(''):'<div class="empty-msg" style="padding:12px">No notices</div>'}
+      ${d.recent_notices.length?d.recent_notices.map(n=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)"><strong>${n.title}</strong><br><span style="font-size:12px;color:var(--muted)">${fmtDate(n.created_at)} Â· ${n.audience}</span></div>`).join(''):'<div class="empty-msg" style="padding:12px">No notices</div>'}
     </div>`;
 };
 
@@ -142,11 +142,11 @@ sections.attendance = async c => {
     $('attArea').innerHTML=`
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <strong>${cc} · ${dt} · ${d.students.length} students</strong>
+          <strong>${cc} Â· ${dt} Â· ${d.students.length} students</strong>
           <div style="display:flex;gap:6px">
             <button class="btn small secondary" onclick="markAll('present')">All Present</button>
             <button class="btn small secondary" onclick="markAll('absent')">All Absent</button>
-            <button class="btn small" id="saveAttBtn">💾 Save</button>
+            <button class="btn small" id="saveAttBtn">ðŸ’¾ Save</button>
           </div>
         </div>
         <div class="att-grid" id="attGrid">
@@ -228,9 +228,9 @@ sections.results = async c => {
       <select id="examSel" style="min-width:320px">
         <option value="">Select Exam</option>
         ${exams.items.map(e=>{
-          const tag = e.exam_type==='IA'?` · IA-${e.ia_number||'?'}`:(e.exam_type?` · ${e.exam_type}`:'');
-          const prof = e.professional?` · ${e.professional}`:'';
-          return `<option value="${e.id}">${e.title}${tag}${prof} (${fmt(e.exam_date)||'—'})</option>`;
+          const tag = e.exam_type==='IA'?` Â· IA-${e.ia_number||'?'}`:(e.exam_type?` Â· ${e.exam_type}`:'');
+          const prof = e.professional?` Â· ${e.professional}`:'';
+          return `<option value="${e.id}">${e.title}${tag}${prof} (${fmt(e.exam_date)||'â€”'})</option>`;
         }).join('')}
       </select>
       <button class="btn small" id="loadResults">Load</button>
@@ -256,10 +256,10 @@ sections.results = async c => {
       <div class="card">
         <div style="display:flex;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
           <div><strong>${ex.title||''}</strong>${iaBadge} ${typeChip(ex.exam_type)}
-            <span style="color:var(--muted);font-size:12px">· Total ${ex.total_marks} · Pass ${ex.passing_marks}</span></div>
+            <span style="color:var(--muted);font-size:12px">Â· Total ${ex.total_marks} Â· Pass ${ex.passing_marks}</span></div>
           <div style="display:flex;gap:6px">
-            <button class="btn small" id="saveMarksBtn">💾 Save All</button>
-            <button class="btn small secondary" id="publishBtn">🚀 Publish Results</button>
+            <button class="btn small" id="saveMarksBtn">ðŸ’¾ Save All</button>
+            <button class="btn small secondary" id="publishBtn">ðŸš€ Publish Results</button>
           </div>
         </div>
         <div style="overflow:auto">
@@ -268,7 +268,7 @@ sections.results = async c => {
           ${d.students.map(s=>`<tr>
             <td>${fmt(s.roll_no)}</td><td>${s.full_name}</td>
             <td><input type="number" class="marks-input" data-sid="${s.id}" value="${existMap[s.id]?.marks??''}" min="0" max="${ex.total_marks||100}" style="width:80px;background:var(--bg);border:1px solid var(--border);color:var(--fg);border-radius:4px;padding:4px 6px;font-size:13px"/></td>
-            <td>${existMap[s.id]?.grade||'—'}</td>
+            <td>${existMap[s.id]?.grade||'â€”'}</td>
             <td>${existMap[s.id]?.pub?badge('Published','green'):(existMap[s.id]?badge('Saved','yellow'):badge('Not Entered','gray'))}</td>
           </tr>`).join('')}
         </tbody></table></div>
@@ -300,9 +300,9 @@ sections.lectures = async c => {
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Title</th><th>Course</th><th>Date</th><th>Time</th><th>Topic</th><th>Actions</th></tr></thead>
     <tbody>${d.items.map(l=>`<tr><td>${l.title}</td><td>${fmt(l.course_code)}</td>
-      <td>${fmt(l.lecture_date)}</td><td>${fmt(l.start_time)}–${fmt(l.end_time)}</td>
+      <td>${fmt(l.lecture_date)}</td><td>${fmt(l.start_time)}â€“${fmt(l.end_time)}</td>
       <td>${fmt(l.topic)}</td>
-      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="deleteLec(${l.id})">🗑️</button></td>
+      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="deleteLec(${l.id})">ðŸ—‘ï¸</button></td>
     </tr>`).join('')||'<tr><td colspan="6" class="empty-msg">No lectures logged yet</td></tr>'}
     </tbody></table></div>`;
   $('addLecBtn').addEventListener('click',()=>{
@@ -330,7 +330,7 @@ sections.studyMaterial = async c => {
     <table><thead><tr><th>Title</th><th>Course</th><th>File</th><th>Uploaded</th><th>Actions</th></tr></thead>
     <tbody>${d.items.map(m=>`<tr><td>${m.title}<br><small style="color:var(--muted)">${fmt(m.description)}</small></td>
       <td>${fmt(m.course_code)}</td><td>${fmt(m.file_name)}</td><td>${fmtDate(m.created_at)}</td>
-      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="deleteMat(${m.id})">🗑️</button></td>
+      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="deleteMat(${m.id})">ðŸ—‘ï¸</button></td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty-msg">None</td></tr>'}
     </tbody></table></div>`;
   $('addMatBtn').addEventListener('click',()=>{
@@ -356,8 +356,8 @@ sections.onlineExams = async c => {
       <td>${e.duration_mins} min</td><td>${e.total_marks}</td><td>${e.question_count}</td>
       <td>${statusBadge(e.status)}</td>
       <td class="actions" style="display:flex;gap:4px">
-        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="addQFaculty(${e.id},'${e.title.replace(/'/g,"\\'")}')">❓ Q</button>
-        ${e.status==='draft'?`<button class="btn small" style="font-size:11px;padding:3px 8px" onclick="publishOEF(${e.id})">🚀</button>`:''}
+        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="addQFaculty(${e.id},'${e.title.replace(/'/g,"\\'")}')">â“ Q</button>
+        ${e.status==='draft'?`<button class="btn small" style="font-size:11px;padding:3px 8px" onclick="publishOEF(${e.id})">ðŸš€</button>`:''}
       </td>
     </tr>`).join('')||'<tr><td colspan="7" class="empty-msg">None yet</td></tr>'}
     </tbody></table></div>`;
@@ -377,7 +377,7 @@ window.publishOEF = async id=>{ await API(`/api/faculty/online-exams/${id}/publi
 window.addQFaculty = async (id,title) => {
   const qd = await API(`/api/faculty/online-exams/${id}/questions`);
   openModal(`Questions: ${title}`,
-    `<div style="max-height:200px;overflow-y:auto;margin-bottom:10px">${qd.items.map((q,i)=>`<div style="background:var(--bg-2);padding:8px 12px;border-radius:6px;margin-bottom:4px;font-size:12.5px;border:1px solid var(--divider)">${i+1}. ${q.question} <span style="color:var(--success);font-weight:500">✓${q.correct_option}</span></div>`).join('')||'<div style="padding:6px;color:var(--muted);font-size:12px">No questions</div>'}</div>
+    `<div style="max-height:200px;overflow-y:auto;margin-bottom:10px">${qd.items.map((q,i)=>`<div style="background:var(--bg-2);padding:8px 12px;border-radius:6px;margin-bottom:4px;font-size:12.5px;border:1px solid var(--divider)">${i+1}. ${q.question} <span style="color:var(--success);font-weight:500">âœ“${q.correct_option}</span></div>`).join('')||'<div style="padding:6px;color:var(--muted);font-size:12px">No questions</div>'}</div>
     <hr style="border-color:var(--border);margin:10px 0"/>
     <div class="form-grid">
       <div class="form-group cols1"><label>Question *</label><textarea name="question" required rows="2"></textarea></div>
@@ -402,8 +402,8 @@ sections.lms = async c => {
     <tbody>${d.items.map(c2=>`<tr><td>${c2.title}</td><td>${fmt(c2.category)}</td>
       <td>${c2.duration_hours}h</td><td>${c2.module_count}</td><td>${statusBadge(c2.status)}</td>
       <td class="actions" style="display:flex;gap:4px">
-        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="addModFaculty(${c2.id},'${c2.title.replace(/'/g,"\\'")}')">📚 Modules</button>
-        ${c2.status!=='published'?`<button class="btn small" style="font-size:11px;padding:3px 8px" onclick="publishLMSF(${c2.id})">🚀</button>`:''}
+        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="addModFaculty(${c2.id},'${c2.title.replace(/'/g,"\\'")}')">ðŸ“š Modules</button>
+        ${c2.status!=='published'?`<button class="btn small" style="font-size:11px;padding:3px 8px" onclick="publishLMSF(${c2.id})">ðŸš€</button>`:''}
       </td>
     </tr>`).join('')||'<tr><td colspan="6" class="empty-msg">None</td></tr>'}
     </tbody></table></div>`;
@@ -426,7 +426,7 @@ window.addModFaculty = async (cid,ctitle) => {
     <div class="form-grid cols1">
       <div class="form-group"><label>Module Title *</label><input name="title" required/></div>
       <div class="form-group"><label>Content</label><textarea name="content" rows="3"></textarea></div>
-      <div class="form-group"><label>Video URL</label><input name="video_url" placeholder="https://…"/></div>
+      <div class="form-group"><label>Video URL</label><input name="video_url" placeholder="https://â€¦"/></div>
       <div class="form-group"><label>Order</label><input name="order_no" type="number" value="${md.items.length+1}"/></div>
     </div>`,
     async()=>{ await API(`/api/faculty/lms/courses/${cid}/modules`,{method:'POST',body:JSON.stringify(formData())}); addModFaculty(cid,ctitle); }
@@ -459,12 +459,12 @@ sections.allocations = async c => {
         <td><strong>${a.title}</strong>${a.message?`<br><small style="color:var(--muted)">${a.message}</small>`:''}</td>
         <td>${catChip(a.category)}</td>
         <td>${fmt(a.priority)}</td>
-        <td>${fmtDate(a.due_date)||'—'}</td>
+        <td>${fmtDate(a.due_date)||'â€”'}</td>
         <td>${statusChip(a.status)}</td>
         <td><small style="color:var(--muted)">${fmt(a.created_by_name)||'Admin'}<br>${fmtDate(a.created_at)}</small></td>
         <td class="actions">
-          ${a.status!=='in-progress'&&a.status!=='completed'?`<button class="icon-btn" onclick="setAllocStatus(${a.id},'in-progress')" title="Start">▶</button>`:''}
-          ${a.status!=='completed'?`<button class="icon-btn" onclick="setAllocStatus(${a.id},'completed')" title="Complete">✔</button>`:''}
+          ${a.status!=='in-progress'&&a.status!=='completed'?`<button class="icon-btn" onclick="setAllocStatus(${a.id},'in-progress')" title="Start">â–¶</button>`:''}
+          ${a.status!=='completed'?`<button class="icon-btn" onclick="setAllocStatus(${a.id},'completed')" title="Complete">âœ”</button>`:''}
         </td>
       </tr>`).join('')||'<tr><td colspan="7" class="empty-msg">No allocations assigned to you</td></tr>'}
       </tbody></table></div>`;
@@ -490,7 +490,7 @@ sections.dailyReport = async c => {
         <div class="form-group"><label>Challenges / Issues</label><textarea name="challenges" id="drChall" rows="2"></textarea></div>
         <div class="form-group"><label>Plan for Tomorrow</label><textarea name="plan_tomorrow" id="drPlan" rows="2"></textarea></div>
       </div>
-      <button class="btn small" id="submitDR" style="margin-top:10px">💾 Submit Report</button>
+      <button class="btn small" id="submitDR" style="margin-top:10px">ðŸ’¾ Submit Report</button>
     </div>
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Date</th><th>Title</th><th>Activities</th></tr></thead>
@@ -515,7 +515,7 @@ sections.reminders = async c => {
     <table><thead><tr><th>Title</th><th>Description</th><th>Remind At</th><th>Repeat</th><th>Actions</th></tr></thead>
     <tbody>${d.items.map(r=>`<tr><td>${r.title}</td><td>${fmt(r.description)}</td>
       <td>${r.remind_at}</td><td>${r.repeat}</td>
-      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="doneReminder(${r.id})">✅ Done</button></td>
+      <td><button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="doneReminder(${r.id})">âœ… Done</button></td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty-msg">No reminders</td></tr>'}
     </tbody></table></div>`;
   $('addRemBtn').addEventListener('click',()=>{
@@ -550,29 +550,29 @@ sections.profile = async c => {
     <div class="section-header"><h2>My Profile</h2></div>
     <div class="card">
       <div class="grid cols-2">
-        ${[['Full Name',d.user?.full_name],['Username',d.user?.username],['Email',d.user?.email||'—'],
-           ['Role',d.user?.role],['Emp Code',d.employee?.emp_code||'—'],['Department',d.employee?.department||'—'],
-           ['Designation',d.employee?.designation||'—'],['Join Date',d.employee?.join_date||'—'],
-           ['Salary','₹'+(d.employee?.salary||0).toLocaleString()],['Phone',d.employee?.phone||'—']
+        ${[['Full Name',d.user?.full_name],['Username',d.user?.username],['Email',d.user?.email||'â€”'],
+           ['Role',d.user?.role],['Emp Code',d.employee?.emp_code||'â€”'],['Department',d.employee?.department||'â€”'],
+           ['Designation',d.employee?.designation||'â€”'],['Join Date',d.employee?.join_date||'â€”'],
+           ['Salary','â‚¹'+(d.employee?.salary||0).toLocaleString()],['Phone',d.employee?.phone||'â€”']
         ].map(([l,v])=>`<div class="card" style="padding:12px"><div class="sub">${l}</div><div style="font-weight:600">${v}</div></div>`).join('')}
       </div>
     </div>`;
 };
 
-// ═════════════════════════════════════════════════════════════════
-// MEDICAL COLLEGE — Clinical Postings & Logbook Verification
-// ═════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// MEDICAL COLLEGE â€” Clinical Postings & Logbook Verification
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 sections.clinicalPostings = async c => {
   const d = await API('/api/faculty/clinical-postings');
   c.innerHTML = `
-    <div class="section-header"><h2>Clinical Postings — Assigned to Me</h2></div>
+    <div class="section-header"><h2>Clinical Postings â€” Assigned to Me</h2></div>
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Department</th><th>Ward</th><th>Batch / Student</th><th>Period</th><th>Shift</th><th>Status</th></tr></thead>
     <tbody>${d.items.map(p=>`<tr>
       <td><strong>${fmt(p.dept_full||p.department)}</strong></td>
       <td>${fmt(p.ward)}</td>
-      <td>${p.student_name?p.student_name+' <small style="color:var(--muted)">('+fmt(p.roll_no)+')</small>':(p.batch_name||'—')}</td>
-      <td>${fmtDate(p.start_date)} → ${fmtDate(p.end_date)}</td>
+      <td>${p.student_name?p.student_name+' <small style="color:var(--muted)">('+fmt(p.roll_no)+')</small>':(p.batch_name||'â€”')}</td>
+      <td>${fmtDate(p.start_date)} â†’ ${fmtDate(p.end_date)}</td>
       <td>${fmt(p.shift)}</td>
       <td>${badge(p.status, p.status==='ongoing'?'green':p.status==='completed'?'blue':'gray')}</td>
     </tr>`).join('')||'<tr><td colspan="6" class="empty-msg">No postings assigned</td></tr>'}
@@ -584,7 +584,7 @@ sections.verifyCaseLogs = async c => {
   const render = async () => {
     const d = await API('/api/faculty/case-logs?status=' + filter);
     c.innerHTML = `
-      <div class="section-header"><h2>Case Logbook — Verification Queue</h2></div>
+      <div class="section-header"><h2>Case Logbook â€” Verification Queue</h2></div>
       <div class="filter-bar">
         <select id="fStatus">
           <option value="pending">Pending Verification</option>
@@ -597,7 +597,7 @@ sections.verifyCaseLogs = async c => {
           <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
             <div style="flex:1;min-width:280px">
               <div style="font-weight:500">${cl.student_name} <small style="color:var(--muted)">(${fmt(cl.roll_no)})</small></div>
-              <div style="font-size:12px;color:var(--muted)">${fmtDate(cl.case_date)} · ${fmt(cl.department)}${cl.ward?' / '+cl.ward:''}</div>
+              <div style="font-size:12px;color:var(--muted)">${fmtDate(cl.case_date)} Â· ${fmt(cl.department)}${cl.ward?' / '+cl.ward:''}</div>
             </div>
             <div>${badge(cl.status, cl.status==='verified'?'green':cl.status==='rejected'?'red':'yellow')}</div>
           </div>
@@ -611,8 +611,8 @@ sections.verifyCaseLogs = async c => {
           </div>
           ${cl.status==='pending'?`
             <div style="margin-top:12px;display:flex;gap:8px">
-              <button class="btn small" onclick="verifyCase(${cl.id},'verified')">✓ Verify</button>
-              <button class="btn small secondary" onclick="verifyCase(${cl.id},'rejected')">✗ Reject with remarks</button>
+              <button class="btn small" onclick="verifyCase(${cl.id},'verified')">âœ“ Verify</button>
+              <button class="btn small secondary" onclick="verifyCase(${cl.id},'rejected')">âœ— Reject with remarks</button>
             </div>`:''}
         </div>`).join('') : '<div class="empty-msg">No entries</div>'}`;
     $('fStatus').value = filter;
@@ -635,7 +635,7 @@ sections.verifyProcLogs = async c => {
   const render = async () => {
     const d = await API('/api/faculty/procedure-logs?status=' + filter);
     c.innerHTML = `
-      <div class="section-header"><h2>Procedure Logbook — Verification Queue</h2></div>
+      <div class="section-header"><h2>Procedure Logbook â€” Verification Queue</h2></div>
       <div class="filter-bar">
         <select id="fStatus">
           <option value="pending">Pending Verification</option>
@@ -654,8 +654,8 @@ sections.verifyProcLogs = async c => {
         <td>${badge(p.level, p.level==='performed'?'green':p.level==='assisted'?'blue':'gray')}</td>
         <td style="font-size:12px;color:var(--muted);max-width:200px">${fmt(p.remarks)}</td>
         <td class="actions">${p.status==='pending'?`
-          <button class="btn small" onclick="verifyProc(${p.id},'verified')">✓</button>
-          <button class="btn small secondary" onclick="verifyProc(${p.id},'rejected')">✗</button>`:badge(p.status, p.status==='verified'?'green':'red')}</td>
+          <button class="btn small" onclick="verifyProc(${p.id},'verified')">âœ“</button>
+          <button class="btn small secondary" onclick="verifyProc(${p.id},'rejected')">âœ—</button>`:badge(p.status, p.status==='verified'?'green':'red')}</td>
       </tr>`).join('')||'<tr><td colspan="8" class="empty-msg">No entries</td></tr>'}
       </tbody></table></div>`;
     $('fStatus').value = filter;
@@ -674,7 +674,7 @@ window.verifyProc = async (id, action) => {
 };
 
 function loadSection(sec){
-  const c=$('appContent'); c.innerHTML='<div class="empty-msg">Loading…</div>';
+  const c=$('appContent'); c.innerHTML='<div class="empty-msg">Loadingâ€¦</div>';
   const fn=sections[sec]; if(fn)fn(c); else c.innerHTML=`<div class="empty-msg">${sec} coming soon.</div>`;
 }
 fetch('/api/me').then(r=>r.json()).then(d=>{
@@ -685,5 +685,6 @@ fetch('/api/me').then(r=>r.json()).then(d=>{
 $('logoutBtn').addEventListener('click', async()=>{ await fetch('/api/logout',{method:'POST'}); location.href='/login.html'; });
 loadSection('dashboard');
 </script>
-</body>
+<script src="/js/mobile.js"></script></body>
 </html>
+

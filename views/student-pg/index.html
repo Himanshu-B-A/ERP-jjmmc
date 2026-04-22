@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JJMMC Medical College · PG Student</title>
+<title>JJMMC Medical College Â· PG Student</title>
 <link rel="stylesheet" href="/css/style.css"/>
 <style>
 /* Student portal page-specific overrides (global UI in style.css) */
@@ -16,7 +16,7 @@
     <div class="brand-logo">JJ</div>
     <div>
       <h1 style="font-size:14px">PG Student Portal <span class="prog-badge prog-badge-pg">PG</span></h1>
-      <small>JJMMC · MD / MS / DNB</small>
+      <small>JJMMC Â· MD / MS / DNB</small>
     </div>
   </div>
   <nav class="nav" id="sideNav">
@@ -73,22 +73,22 @@
             <button class="notif-link" id="notifMarkAll">Mark all read</button>
           </div>
           <div class="notif-panel-body" id="notifPanelBody">
-            <div class="empty-msg" style="padding:18px;text-align:center">Loading…</div>
+            <div class="empty-msg" style="padding:18px;text-align:center">Loadingâ€¦</div>
           </div>
           <div class="notif-panel-foot">
-            <a href="#" id="notifSeeAll">View all notifications →</a>
+            <a href="#" id="notifSeeAll">View all notifications â†’</a>
           </div>
         </div>
       </div>
       <div class="avatar" id="avatar">S</div>
       <div style="line-height:1.1">
         <div id="whoName" style="font-weight:700;font-size:13px">Student</div>
-        <div id="whoRoll" style="color:var(--muted);font-size:11px">Loading…</div>
+        <div id="whoRoll" style="color:var(--muted);font-size:11px">Loadingâ€¦</div>
       </div>
       <button class="btn small secondary" id="logoutBtn">Logout</button>
     </div>
   </div>
-  <div class="content" id="appContent"><div class="empty-msg">Loading…</div></div>
+  <div class="content" id="appContent"><div class="empty-msg">Loadingâ€¦</div></div>
 </section>
 </div>
 
@@ -111,8 +111,8 @@ const API=async(url,opts={})=>{
   if(!r.ok){alert(j.error||'Error');throw new Error(j.error);}
   return j;
 };
-const fmt=v=>v==null?'—':v;
-const fmtDate=d=>d?d.split('T')[0]:'—';
+const fmt=v=>v==null?'â€”':v;
+const fmtDate=d=>d?d.split('T')[0]:'â€”';
 const badge=(t,c='gray')=>`<span class="badge ${c}">${t}</span>`;
 const pctColor=p=>p>=75?'#34A853':p>=60?'#FBBC04':'#EA4335';
 
@@ -134,7 +134,7 @@ document.getElementById('sideNav').addEventListener('click',e=>{
 
 const sections={};
 
-// ── DASHBOARD ────────────────────────────────────────────────────
+// â”€â”€ DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.dashboard = async c => {
   const [prof, fees, att, results] = await Promise.all([
     API('/api/student/profile'), API('/api/student/fees'),
@@ -145,7 +145,7 @@ sections.dashboard = async c => {
   c.innerHTML=`
     <div class="page-title"><h2>My Dashboard</h2></div>
     <div class="grid cols-4">
-      <div class="card"><div class="sub">Total Fees Paid</div><div class="value" style="font-size:18px">₹${fees.total_paid?.toLocaleString()}</div></div>
+      <div class="card"><div class="sub">Total Fees Paid</div><div class="value" style="font-size:18px">â‚¹${fees.total_paid?.toLocaleString()}</div></div>
       <div class="card"><div class="sub">Avg Attendance</div><div class="value" style="color:${pctColor(avgAtt)}">${avgAtt}%</div></div>
       <div class="card"><div class="sub">Exams Appeared</div><div class="value">${results.results.length}</div></div>
       <div class="card"><div class="sub">Department</div><div class="value" style="font-size:16px">${fmt(p?.department)}</div></div>
@@ -169,25 +169,25 @@ sections.dashboard = async c => {
     </div>`;
 };
 
-// ── PROFILE ──────────────────────────────────────────────────────
+// â”€â”€ PROFILE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.profile = async c => {
   const d=await API('/api/student/profile'); const p=d.profile;
   c.innerHTML=`
     <div class="section-header"><h2>My Profile</h2></div>
     <div class="card">
       <div class="grid cols-3">
-        ${[['Full Name',p?.full_name],['Roll No',p?.roll_no||'—'],['University Reg. No',p?.university_reg_no||'—'],
-           ['Course',p?.course||'MBBS'],['MBBS Year',p?.mbbs_year?('Year '+p.mbbs_year+(p.mbbs_year===5?' (Intern)':'')):'—'],['Batch',p?.batch_name||'—'],
-           ['Semester',p?.semester||'—'],['Admission Quota',p?.admission_quota||'—'],['NEET Rank',p?.neet_rank||'—'],
-           ['Date of Birth',p?.dob||'—'],['Gender',p?.gender||'—'],['Blood Group',p?.blood_group||'—'],
-           ['Phone',p?.phone||'—'],['Email',p?.email||'—'],['Aadhaar',p?.aadhaar||'—'],
-           ['Address',p?.address||'—'],['Parent Name',p?.parent_name||'—'],['Parent Phone',p?.parent_phone||'—']
+        ${[['Full Name',p?.full_name],['Roll No',p?.roll_no||'â€”'],['University Reg. No',p?.university_reg_no||'â€”'],
+           ['Course',p?.course||'MBBS'],['MBBS Year',p?.mbbs_year?('Year '+p.mbbs_year+(p.mbbs_year===5?' (Intern)':'')):'â€”'],['Batch',p?.batch_name||'â€”'],
+           ['Semester',p?.semester||'â€”'],['Admission Quota',p?.admission_quota||'â€”'],['NEET Rank',p?.neet_rank||'â€”'],
+           ['Date of Birth',p?.dob||'â€”'],['Gender',p?.gender||'â€”'],['Blood Group',p?.blood_group||'â€”'],
+           ['Phone',p?.phone||'â€”'],['Email',p?.email||'â€”'],['Aadhaar',p?.aadhaar||'â€”'],
+           ['Address',p?.address||'â€”'],['Parent Name',p?.parent_name||'â€”'],['Parent Phone',p?.parent_phone||'â€”']
         ].map(([l,v])=>`<div class="card" style="padding:12px"><div class="sub">${l}</div><div style="font-weight:500;font-size:13px">${v}</div></div>`).join('')}
       </div>
     </div>`;
 };
 
-// ── ATTENDANCE ───────────────────────────────────────────────────
+// â”€â”€ ATTENDANCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.attendance = async c => {
   const d=await API('/api/student/attendance');
   c.innerHTML=`
@@ -210,7 +210,7 @@ sections.attendance = async c => {
     </tbody></table></div>`;
 };
 
-// ── TIMETABLE ────────────────────────────────────────────────────
+// â”€â”€ TIMETABLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.timetable = async c => {
   const d=await API('/api/student/timetable');
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -225,7 +225,7 @@ sections.timetable = async c => {
         ${byDay[dy].sort((a,b)=>a.period-b.period).map(t=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;min-width:140px">
           <div style="font-weight:700">Period ${t.period}</div>
           <div style="color:var(--accent)">${fmt(t.course_code)}</div>
-          <div style="color:var(--muted)">${fmt(t.start_time)}–${fmt(t.end_time)}</div>
+          <div style="color:var(--muted)">${fmt(t.start_time)}â€“${fmt(t.end_time)}</div>
           <div style="color:var(--muted)">${fmt(t.faculty_name)}</div>
           <div style="color:var(--muted)">${fmt(t.room)}</div>
         </div>`).join('')}
@@ -234,7 +234,7 @@ sections.timetable = async c => {
     :'<div class="empty-msg">No timetable assigned to your batch yet.</div>'}`;
 };
 
-// ── EXAM SCHEDULE ────────────────────────────────────────────────
+// â”€â”€ EXAM SCHEDULE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.examSchedule = async c => {
   const d=await API('/api/student/exam-schedule');
   c.innerHTML=`
@@ -250,7 +250,7 @@ sections.examSchedule = async c => {
     </tbody></table></div>`;
 };
 
-// ── RESULTS ──────────────────────────────────────────────────────
+// â”€â”€ RESULTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.results = async c => {
   const d=await API('/api/student/results');
   c.innerHTML=`
@@ -265,30 +265,30 @@ sections.results = async c => {
     </tbody></table></div>`;
 };
 
-// ── FEES ─────────────────────────────────────────────────────────
+// â”€â”€ FEES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.fees = async c => {
   const d=await API('/api/student/fees');
   c.innerHTML=`
     <div class="section-header"><h2>Fee History</h2></div>
     <div class="card" style="margin-bottom:14px">
       <div class="sub">Total Paid</div>
-      <div style="font-size:32px;font-weight:500;color:var(--success)">₹${d.total_paid?.toLocaleString()}</div>
+      <div style="font-size:32px;font-weight:500;color:var(--success)">â‚¹${d.total_paid?.toLocaleString()}</div>
     </div>
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Fee Type</th><th>Amount</th><th>Status</th><th>Reference</th><th>Date</th></tr></thead>
     <tbody>${d.payments.map(p=>`<tr>
-      <td>${p.fee_type}</td><td>₹${p.amount?.toLocaleString()}</td>
+      <td>${p.fee_type}</td><td>â‚¹${p.amount?.toLocaleString()}</td>
       <td>${badge('Paid','green')}</td><td>${fmt(p.reference)}</td><td>${fmtDate(p.paid_on)}</td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty-msg">No payments</td></tr>'}
     </tbody></table></div>`;
 };
 
-// ── PAY FEES ─────────────────────────────────────────────────────
+// â”€â”€ PAY FEES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.payFees = c => {
   c.innerHTML=`
     <div class="section-header"><h2>Pay Fees Online</h2></div>
     <div class="card" style="max-width:480px">
-      <h3 style="margin:0 0 16px;font-size:15px">💳 Online Payment Gateway</h3>
+      <h3 style="margin:0 0 16px;font-size:15px">ðŸ’³ Online Payment Gateway</h3>
       <div class="form-grid cols1">
         <div class="form-group"><label>Fee Type *</label>
           <select id="feeType">
@@ -300,7 +300,7 @@ sections.payFees = c => {
             <option value="Exam">Exam Fee</option>
           </select>
         </div>
-        <div class="form-group"><label>Amount (₹) *</label><input type="number" id="feeAmount" placeholder="e.g. 45000" min="1"/></div>
+        <div class="form-group"><label>Amount (â‚¹) *</label><input type="number" id="feeAmount" placeholder="e.g. 45000" min="1"/></div>
         <div class="form-group"><label>Payment Mode</label>
           <select id="feeGateway">
             <option value="upi">UPI</option>
@@ -310,7 +310,7 @@ sections.payFees = c => {
         </div>
       </div>
       <div class="alert info" style="font-size:12.5px;margin:14px 0">
-        🔒 Payments are securely processed. A unique reference ID will be generated upon successful payment.
+        ðŸ”’ Payments are securely processed. A unique reference ID will be generated upon successful payment.
       </div>
       <button class="btn" id="payBtn">Pay Now</button>
       <div id="payResult" style="margin-top:12px;font-size:13px"></div>
@@ -318,18 +318,18 @@ sections.payFees = c => {
   $('payBtn').addEventListener('click', async ()=>{
     const ft=$('feeType').value, amt=Number($('feeAmount').value), gw=$('feeGateway').value;
     if(!ft||!amt||amt<1){alert('Enter valid fee type and amount');return;}
-    $('payBtn').textContent='Processing…'; $('payBtn').disabled=true;
+    $('payBtn').textContent='Processingâ€¦'; $('payBtn').disabled=true;
     await new Promise(r=>setTimeout(r,1200));
     try {
       const d=await API('/api/student/fees/pay',{method:'POST',body:JSON.stringify({fee_type:ft,amount:amt,gateway:gw})});
       $('payResult').innerHTML=`<div class="alert success">
-        ✅ Payment Successful!<br>Reference: <strong>${d.reference}</strong><br>Amount: ₹${amt.toLocaleString()}</div>`;
+        âœ… Payment Successful!<br>Reference: <strong>${d.reference}</strong><br>Amount: â‚¹${amt.toLocaleString()}</div>`;
     } catch{}
     $('payBtn').textContent='Pay Now'; $('payBtn').disabled=false;
   });
 };
 
-// ── ONLINE EXAMS ─────────────────────────────────────────────────
+// â”€â”€ ONLINE EXAMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.onlineExams = async c => {
   const d=await API('/api/student/online-exams');
   c.innerHTML=`
@@ -339,13 +339,13 @@ sections.onlineExams = async c => {
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <div style="font-weight:700;font-size:15px">${e.title}</div>
-          <div style="color:var(--muted);font-size:12px;margin-top:2px">${fmt(e.course_code)} · ${e.duration_mins} min · ${e.total_marks} marks</div>
-          ${e.start_time?`<div style="color:var(--muted);font-size:12px">⏰ ${e.start_time} – ${e.end_time||'Open'}</div>`:''}
+          <div style="color:var(--muted);font-size:12px;margin-top:2px">${fmt(e.course_code)} Â· ${e.duration_mins} min Â· ${e.total_marks} marks</div>
+          ${e.start_time?`<div style="color:var(--muted);font-size:12px">â° ${e.start_time} â€“ ${e.end_time||'Open'}</div>`:''}
         </div>
         <div>
           ${e.attempt_status==='submitted'?
             `<div>${badge('Submitted','green')}<br><small style="color:var(--muted)">Score: ${e.my_score}/${e.total_marks}</small></div>`:
-            `<button class="btn small" onclick="takeExam(${e.id},'${e.title.replace(/'/g,"\\'")}')">Take Exam →</button>`
+            `<button class="btn small" onclick="takeExam(${e.id},'${e.title.replace(/'/g,"\\'")}')">Take Exam â†’</button>`
           }
         </div>
       </div>
@@ -367,7 +367,7 @@ window.takeExam = async (id, title) => {
       $('submitExamBtn').addEventListener('click', async ()=>{
         const r=await API(`/api/student/online-exams/${id}/submit`,{method:'POST',body:JSON.stringify({answers})});
         $('appContent').innerHTML=`<div class="card" style="max-width:480px;margin:0 auto;text-align:center">
-          <div style="font-size:48px;margin-bottom:12px">${r.score>=d.exam.passing_marks?'🎉':'😔'}</div>
+          <div style="font-size:48px;margin-bottom:12px">${r.score>=d.exam.passing_marks?'ðŸŽ‰':'ðŸ˜”'}</div>
           <h2>Exam Submitted!</h2>
           <div style="font-size:24px;font-weight:500;color:${r.score>=d.exam.passing_marks?'var(--success)':'var(--danger)'}">Score: ${r.score}/${r.total}</div>
           <div style="color:var(--muted);margin:8px 0">${r.score>=d.exam.passing_marks?'Congratulations! You passed.':'Better luck next time.'}</div>
@@ -393,8 +393,8 @@ window.takeExam = async (id, title) => {
             <strong>${k.toUpperCase()})</strong> ${v}
           </button>`).join('')}
         <div style="display:flex;justify-content:space-between;margin-top:16px">
-          ${qIdx>0?`<button class="btn small secondary" onclick="qIdx--;render()">← Prev</button>`:'<span></span>'}
-          <button class="btn small" onclick="qIdx++;render()">${qIdx===d.questions.length-1?'Review & Submit →':'Next →'}</button>
+          ${qIdx>0?`<button class="btn small secondary" onclick="qIdx--;render()">â† Prev</button>`:'<span></span>'}
+          <button class="btn small" onclick="qIdx++;render()">${qIdx===d.questions.length-1?'Review & Submit â†’':'Next â†’'}</button>
         </div>
       </div>`;
     window.selectOpt=(qid,opt)=>{ answers[qid]=opt; render(); };
@@ -402,7 +402,7 @@ window.takeExam = async (id, title) => {
   window.qIdx=qIdx; window.render=render; render();
 };
 
-// ── STUDY MATERIAL ───────────────────────────────────────────────
+// â”€â”€ STUDY MATERIAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.studyMaterial = async c => {
   const d=await API('/api/student/study-materials');
   c.innerHTML=`
@@ -412,12 +412,12 @@ sections.studyMaterial = async c => {
     <tbody>${d.items.map(m=>`<tr>
       <td>${m.title}<br><small style="color:var(--muted)">${fmt(m.description)}</small></td>
       <td>${fmt(m.course_code)}</td><td>${fmt(m.file_name)||'Link only'}</td><td>${fmtDate(m.created_at)}</td>
-      <td>${m.file_name?`<a href="/api/student/study-materials/${m.id}/download" class="btn small secondary" style="font-size:11px;padding:3px 8px">⬇ Download</a>`:'—'}</td>
+      <td>${m.file_name?`<a href="/api/student/study-materials/${m.id}/download" class="btn small secondary" style="font-size:11px;padding:3px 8px">â¬‡ Download</a>`:'â€”'}</td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty-msg">No materials uploaded</td></tr>'}
     </tbody></table></div>`;
 };
 
-// ── LMS ──────────────────────────────────────────────────────────
+// â”€â”€ LMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.lms = async c => {
   const d=await API('/api/student/lms/courses');
   c.innerHTML=`
@@ -427,7 +427,7 @@ sections.lms = async c => {
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div>
           <div style="font-weight:700;font-size:14px">${course.title}</div>
-          <div style="color:var(--muted);font-size:12px">${fmt(course.category)} · ${course.duration_hours}h</div>
+          <div style="color:var(--muted);font-size:12px">${fmt(course.category)} Â· ${course.duration_hours}h</div>
           <div style="font-size:12px;color:var(--muted)">By: ${fmt(course.instructor_name)}</div>
         </div>
       </div>
@@ -438,7 +438,7 @@ sections.lms = async c => {
           </div>
           <div style="height:4px;background:var(--border);border-radius:2px"><div style="height:100%;background:var(--accent);border-radius:2px;width:${course.total_modules?Math.round((course.completed_modules||0)/course.total_modules*100):0}%"></div></div>
         </div>
-        <button class="btn small secondary" style="width:100%" onclick="viewLMSCourse(${course.id},'${course.title.replace(/'/g,"\\'")}')">📚 Continue</button>
+        <button class="btn small secondary" style="width:100%" onclick="viewLMSCourse(${course.id},'${course.title.replace(/'/g,"\\'")}')">ðŸ“š Continue</button>
       `:`<button class="btn small" style="width:100%" onclick="enrollLMS(${course.id})">+ Enroll Free</button>`}
     </div>`).join('')||'<div class="empty-msg" style="grid-column:1/-1">No courses published yet</div>'}
     </div>`;
@@ -449,15 +449,15 @@ window.viewLMSCourse = async (id,title) => {
   openModal(`Course: ${title}`,
     `<div>${d.items.map((m,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px">
       <div style="font-weight:600;font-size:13px">${i+1}. ${m.title}</div>
-      ${m.content?`<div style="font-size:12px;color:var(--muted);margin-top:4px">${m.content.slice(0,120)}…</div>`:''}
-      ${m.video_url?`<a href="${m.video_url}" target="_blank" style="font-size:12px;color:var(--accent)">▶ Watch Video</a>`:''}
+      ${m.content?`<div style="font-size:12px;color:var(--muted);margin-top:4px">${m.content.slice(0,120)}â€¦</div>`:''}
+      ${m.video_url?`<a href="${m.video_url}" target="_blank" style="font-size:12px;color:var(--accent)">â–¶ Watch Video</a>`:''}
     </div>`).join('')||'<div class="empty-msg">No modules yet</div>'}</div>`,
     ()=>closeModal()
   );
   $('modalSubmit').textContent='Close'; $('modalSubmit').onclick=closeModal;
 };
 
-// ── ELECTIVES ────────────────────────────────────────────────────
+// â”€â”€ ELECTIVES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.electives = async c => {
   const d=await API('/api/student/electives');
   const regCodes=new Set(d.registered.map(r=>r.course_code));
@@ -475,7 +475,7 @@ sections.electives = async c => {
         <h3 style="margin:0 0 10px;font-size:14px">My Registered Electives</h3>
         ${d.registered.map(r=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)">
           <div style="font-size:13px">${r.course_name}</div>
-          <div style="font-size:11px;color:var(--muted)">${r.course_code} · ${fmtDate(r.created_at)}</div>
+          <div style="font-size:11px;color:var(--muted)">${r.course_code} Â· ${fmtDate(r.created_at)}</div>
         </div>`).join('')||'<div style="color:var(--muted);font-size:13px;margin-top:8px">No electives registered</div>'}
       </div>
     </div>`;
@@ -485,7 +485,7 @@ window.registerElective = async (code,name) => {
   loadSection('electives');
 };
 
-// ── REVALUATION ──────────────────────────────────────────────────
+// â”€â”€ REVALUATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.revaluation = async c => {
   const d=await API('/api/student/revaluation');
   c.innerHTML=`
@@ -508,36 +508,36 @@ sections.revaluation = async c => {
   });
 };
 
-// ── HOSTEL ───────────────────────────────────────────────────────
+// â”€â”€ HOSTEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.hostel = async c => {
   const d=await API('/api/student/hostel'); const a=d.allotment;
   c.innerHTML=`
     <div class="section-header"><h2>Hostel</h2></div>
     ${a?`<div class="card" style="max-width:400px">
       <h3 style="margin:0 0 12px;font-size:14px">My Room Allotment</h3>
-      ${[['Room No',a.room_no],['Block',a.block||'—'],['Floor',a.floor||'—'],
-         ['Type',a.room_type],['Monthly Fee','₹'+a.monthly_fee?.toLocaleString()],
+      ${[['Room No',a.room_no],['Block',a.block||'â€”'],['Floor',a.floor||'â€”'],
+         ['Type',a.room_type],['Monthly Fee','â‚¹'+a.monthly_fee?.toLocaleString()],
          ['Allotted On',a.allotment_date]
       ].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">${l}</span><strong>${v}</strong></div>`).join('')}
     </div>`:'<div class="empty-msg">No hostel room allotted yet. Contact admin.</div>'}`;
 };
 
-// ── TRANSPORT ────────────────────────────────────────────────────
+// â”€â”€ TRANSPORT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.transport = async c => {
   const d=await API('/api/student/transport'); const a=d.allotment;
   c.innerHTML=`
     <div class="section-header"><h2>Transport</h2></div>
     ${a?`<div class="card" style="max-width:480px">
       <h3 style="margin:0 0 12px;font-size:14px">My Transport Allotment</h3>
-      ${[['Route No',a.route_no],['Route Name',a.route_name],['Vehicle',a.vehicle_no||'—'],
-         ['Driver',a.driver_name||'—'],['Driver Phone',a.driver_phone||'—'],
-         ['My Stop',a.stop_name||'—'],['Monthly Fee','₹'+a.monthly_fee?.toLocaleString()],
+      ${[['Route No',a.route_no],['Route Name',a.route_name],['Vehicle',a.vehicle_no||'â€”'],
+         ['Driver',a.driver_name||'â€”'],['Driver Phone',a.driver_phone||'â€”'],
+         ['My Stop',a.stop_name||'â€”'],['Monthly Fee','â‚¹'+a.monthly_fee?.toLocaleString()],
       ].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">${l}</span><strong>${v}</strong></div>`).join('')}
-      <div style="margin-top:10px;font-size:13px;color:var(--muted)">Stops: ${a.stops||'—'}</div>
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)">Stops: ${a.stops||'â€”'}</div>
     </div>`:'<div class="empty-msg">No transport route allotted. Contact admin.</div>'}`;
 };
 
-// ── LIBRARY ──────────────────────────────────────────────────────
+// â”€â”€ LIBRARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.library = async c => {
   const d=await API('/api/student/library');
   c.innerHTML=`
@@ -553,7 +553,7 @@ sections.library = async c => {
     </tbody></table></div>`;
 };
 
-// ── PLACEMENT ────────────────────────────────────────────────────
+// â”€â”€ PLACEMENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.allocations = async c => {
   let status = '';
   const render = async () => {
@@ -584,13 +584,13 @@ sections.allocations = async c => {
             <div style="font-size:12px;color:var(--muted);text-align:right">
               ${a.due_date?`Due: <strong>${fmtDate(a.due_date)}</strong><br>`:''}
               From: ${fmt(a.created_by_name)||'Admin'}<br>
-              ${a.assignee_type==='batch'?'📚 '+fmt(a.batch_code||a.batch_name||'Batch'):'Personal'}
+              ${a.assignee_type==='batch'?'ðŸ“š '+fmt(a.batch_code||a.batch_name||'Batch'):'Personal'}
             </div>
           </div>
           ${a.message?`<div style="font-size:13px;color:var(--muted);margin-top:6px;white-space:pre-wrap">${a.message}</div>`:''}
           <div style="margin-top:10px;display:flex;gap:6px">
-            ${a.status==='pending'?`<button class="btn small secondary" onclick="setStuAllocStatus(${a.id},'in-progress')">▶ Start</button>`:''}
-            ${a.status!=='completed'&&a.status!=='cancelled'?`<button class="btn small" onclick="setStuAllocStatus(${a.id},'completed')">✔ Mark done</button>`:''}
+            ${a.status==='pending'?`<button class="btn small secondary" onclick="setStuAllocStatus(${a.id},'in-progress')">â–¶ Start</button>`:''}
+            ${a.status!=='completed'&&a.status!=='cancelled'?`<button class="btn small" onclick="setStuAllocStatus(${a.id},'completed')">âœ” Mark done</button>`:''}
           </div>
         </div>`).join('')||'<div class="empty-msg card" style="padding:20px">No allocations assigned to you yet.</div>'}
       </div>`;
@@ -603,7 +603,7 @@ window.setStuAllocStatus = async (id, s) => {
   loadSection('allocations');
 };
 
-// ── LOG BOOK ─────────────────────────────────────────────────────
+// â”€â”€ LOG BOOK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.logbook = async c => {
   const d=await API('/api/student/logbook');
   c.innerHTML=`
@@ -627,7 +627,7 @@ sections.logbook = async c => {
   });
 };
 
-// ── FEEDBACK ─────────────────────────────────────────────────────
+// â”€â”€ FEEDBACK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.feedback = async c => {
   const d=await API('/api/student/feedback');
   c.innerHTML=`
@@ -636,21 +636,21 @@ sections.feedback = async c => {
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Subject</th><th>Rating</th><th>Comments</th><th>Date</th></tr></thead>
     <tbody>${d.items.map(f=>`<tr><td>${f.subject}</td>
-      <td>${'⭐'.repeat(f.rating)}${f.rating}/5</td>
+      <td>${'â­'.repeat(f.rating)}${f.rating}/5</td>
       <td>${fmt(f.comments)}</td><td>${fmtDate(f.created_at)}</td>
     </tr>`).join('')||'<tr><td colspan="4" class="empty-msg">No feedback</td></tr>'}
     </tbody></table></div>`;
   $('addFbBtn').addEventListener('click',()=>{
     openModal('Submit Feedback',`<div class="form-grid cols1">
       <div class="form-group"><label>Subject *</label><input name="subject" required placeholder="CSE201 - Data Structures"/></div>
-      <div class="form-group"><label>Rating (1–5) *</label><select name="rating"><option value="5">⭐⭐⭐⭐⭐ Excellent</option><option value="4">⭐⭐⭐⭐ Good</option><option value="3">⭐⭐⭐ Average</option><option value="2">⭐⭐ Below Average</option><option value="1">⭐ Poor</option></select></div>
+      <div class="form-group"><label>Rating (1â€“5) *</label><select name="rating"><option value="5">â­â­â­â­â­ Excellent</option><option value="4">â­â­â­â­ Good</option><option value="3">â­â­â­ Average</option><option value="2">â­â­ Below Average</option><option value="1">â­ Poor</option></select></div>
       <div class="form-group"><label>Comments</label><textarea name="comments"></textarea></div>
     </div>`,
     async()=>{ await API('/api/student/feedback',{method:'POST',body:JSON.stringify(formData())}); closeModal(); loadSection('feedback'); });
   });
 };
 
-// ── REMINDERS ────────────────────────────────────────────────────
+// â”€â”€ REMINDERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.reminders = async c => {
   const d=await API('/api/student/reminders');
   c.innerHTML=`
@@ -660,7 +660,7 @@ sections.reminders = async c => {
     ${d.items.map(r=>`<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div><strong>${r.title}</strong><br><span style="font-size:12px;color:var(--muted)">${r.remind_at}</span></div>
-        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="doneRem(${r.id})">✅</button>
+        <button class="btn small secondary" style="font-size:11px;padding:3px 8px" onclick="doneRem(${r.id})">âœ…</button>
       </div>
       ${r.description?`<div style="font-size:13px;color:var(--muted);margin-top:4px">${r.description}</div>`:''}
     </div>`).join('')||'<div class="empty-msg">No reminders</div>'}
@@ -676,7 +676,7 @@ sections.reminders = async c => {
 };
 window.doneRem = async id=>{ await API(`/api/student/reminders/${id}/done`,{method:'PUT'}); loadSection('reminders'); };
 
-// ── BOOKMARKS ────────────────────────────────────────────────────
+// â”€â”€ BOOKMARKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.bookmarks = async c => {
   const d=await API('/api/student/bookmarks');
   c.innerHTML=`
@@ -686,16 +686,16 @@ sections.bookmarks = async c => {
     ${d.items.map(b=>`<div class="card">
       <div style="display:flex;justify-content:space-between">
         <a href="${b.url}" target="_blank" style="font-weight:600;font-size:14px;color:var(--accent)">${b.title}</a>
-        <button class="btn small secondary" style="font-size:10px;padding:2px 6px" onclick="deleteBm(${b.id})">✕</button>
+        <button class="btn small secondary" style="font-size:10px;padding:2px 6px" onclick="deleteBm(${b.id})">âœ•</button>
       </div>
       ${b.notes?`<div style="font-size:12px;color:var(--muted);margin-top:4px">${b.notes}</div>`:''}
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">${b.url.slice(0,40)}…</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">${b.url.slice(0,40)}â€¦</div>
     </div>`).join('')||'<div class="empty-msg">No bookmarks</div>'}
     </div>`;
   $('addBmBtn').addEventListener('click',()=>{
     openModal('Add Bookmark',`<div class="form-grid cols1">
       <div class="form-group"><label>Title *</label><input name="title" required/></div>
-      <div class="form-group"><label>URL *</label><input name="url" type="url" required placeholder="https://…"/></div>
+      <div class="form-group"><label>URL *</label><input name="url" type="url" required placeholder="https://â€¦"/></div>
       <div class="form-group"><label>Notes</label><textarea name="notes"></textarea></div>
     </div>`,
     async()=>{ await API('/api/student/bookmarks',{method:'POST',body:JSON.stringify(formData())}); closeModal(); loadSection('bookmarks'); });
@@ -703,7 +703,7 @@ sections.bookmarks = async c => {
 };
 window.deleteBm = async id=>{ if(!confirm('Delete?'))return; await API(`/api/student/bookmarks/${id}`,{method:'DELETE'}); loadSection('bookmarks'); };
 
-// ── NOTIFICATIONS ────────────────────────────────────────────────
+// â”€â”€ NOTIFICATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.notifications = async c => {
   const d=await API('/api/student/notifications');
   c.innerHTML=`
@@ -723,11 +723,11 @@ sections.notifications = async c => {
 };
 window.markRead = async id=>{ await API(`/api/student/notifications/${id}/read`,{method:'PUT'}); loadSection('notifications'); };
 
-// ═════════════════════════════════════════════════════════════════
-// MEDICAL COLLEGE — Clinical Postings & Logbooks
-// ═════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// MEDICAL COLLEGE â€” Clinical Postings & Logbooks
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-// ── CLINICAL POSTINGS (Student View) ─────────────────────────────
+// â”€â”€ CLINICAL POSTINGS (Student View) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.clinicalPostings = async c => {
   const d = await API('/api/student/clinical-postings');
   const today = new Date().toISOString().split('T')[0];
@@ -741,7 +741,7 @@ sections.clinicalPostings = async c => {
       return `<tr${isActive?' style="background:var(--primary-light)"':''}>
         <td><strong>${fmt(p.dept_full||p.department)}</strong></td>
         <td>${fmt(p.ward)}</td>
-        <td>${fmtDate(p.start_date)} → ${fmtDate(p.end_date)}</td>
+        <td>${fmtDate(p.start_date)} â†’ ${fmtDate(p.end_date)}</td>
         <td>${fmt(p.shift)}</td>
         <td>${fmt(p.supervisor_name)}</td>
         <td>${badge(p.status, p.status==='ongoing'?'green':p.status==='completed'?'blue':'gray')}${isActive?' '+badge('ACTIVE','green'):''}</td>
@@ -750,7 +750,7 @@ sections.clinicalPostings = async c => {
     </tbody></table></div>`;
 };
 
-// ── CASE LOGBOOK (Student View) ──────────────────────────────────
+// â”€â”€ CASE LOGBOOK (Student View) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.caseLogs = async c => {
   const render = async () => {
     const [d, sup] = await Promise.all([
@@ -762,9 +762,9 @@ sections.caseLogs = async c => {
       <div class="section-header"><h2>Clinical Case Logbook</h2>
         <button class="btn small" id="addCaseBtn">+ Add New Case</button></div>
       <div class="stat-cards">
-        <div class="stat-card"><div class="label">📋 Total Cases</div><div class="value">${counts.total||0}</div></div>
-        <div class="stat-card"><div class="label">✅ Verified</div><div class="value" style="color:var(--success)">${counts.verified||0}</div></div>
-        <div class="stat-card"><div class="label">⏳ Pending</div><div class="value" style="color:var(--warning)">${counts.pending||0}</div></div>
+        <div class="stat-card"><div class="label">ðŸ“‹ Total Cases</div><div class="value">${counts.total||0}</div></div>
+        <div class="stat-card"><div class="label">âœ… Verified</div><div class="value" style="color:var(--success)">${counts.verified||0}</div></div>
+        <div class="stat-card"><div class="label">â³ Pending</div><div class="value" style="color:var(--warning)">${counts.pending||0}</div></div>
       </div>
       <div class="card" style="padding:0;overflow:auto">
       <table><thead><tr><th>Date</th><th>Patient</th><th>Dept / Ward</th><th>Diagnosis</th><th>Supervisor</th><th>Status</th><th></th></tr></thead>
@@ -775,25 +775,25 @@ sections.caseLogs = async c => {
         <td><strong>${fmt(cl.diagnosis)}</strong><br><small style="color:var(--muted)">${fmt(cl.chief_complaint)}</small></td>
         <td>${fmt(cl.supervisor_name)}</td>
         <td>${badge(cl.status, cl.status==='verified'?'green':cl.status==='rejected'?'red':'yellow')}</td>
-        <td class="actions">${cl.status!=='verified'?`<button class="icon-btn" onclick="deleteCase(${cl.id})">🗑️</button>`:''}</td>
+        <td class="actions">${cl.status!=='verified'?`<button class="icon-btn" onclick="deleteCase(${cl.id})">ðŸ—‘ï¸</button>`:''}</td>
       </tr>`).join('')||'<tr><td colspan="7" class="empty-msg">No case entries yet. Click "+ Add New Case" to begin.</td></tr>'}
       </tbody></table></div>`;
 
     $('addCaseBtn').addEventListener('click', () => {
-      const supOpts = (sup.items||[]).map(s=>`<option value="${s.id}">${s.full_name} (${s.department||'—'})</option>`).join('');
+      const supOpts = (sup.items||[]).map(s=>`<option value="${s.id}">${s.full_name} (${s.department||'â€”'})</option>`).join('');
       openModal('Add Clinical Case', `
         <div class="form-grid">
           <div class="form-group"><label>Case Date *</label><input name="case_date" type="date" required/></div>
           <div class="form-group"><label>Patient Code</label><input name="patient_code" placeholder="e.g. IPD-1234"/></div>
           <div class="form-group"><label>Age</label><input name="age" type="number" min="0" max="120"/></div>
-          <div class="form-group"><label>Gender</label><select name="gender"><option value="">—</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+          <div class="form-group"><label>Gender</label><select name="gender"><option value="">â€”</option><option>Male</option><option>Female</option><option>Other</option></select></div>
           <div class="form-group"><label>Department</label><input name="department" placeholder="e.g. General Medicine"/></div>
           <div class="form-group"><label>Ward</label><input name="ward"/></div>
           <div class="form-group" style="grid-column:1/-1"><label>Chief Complaint</label><textarea name="chief_complaint" rows="2"></textarea></div>
           <div class="form-group" style="grid-column:1/-1"><label>Diagnosis *</label><textarea name="diagnosis" rows="2" required></textarea></div>
           <div class="form-group" style="grid-column:1/-1"><label>Management</label><textarea name="management" rows="2"></textarea></div>
           <div class="form-group" style="grid-column:1/-1"><label>Learning Points</label><textarea name="learning_points" rows="2"></textarea></div>
-          <div class="form-group" style="grid-column:1/-1"><label>Supervisor (for verification)</label><select name="supervisor_id"><option value="">— None —</option>${supOpts}</select></div>
+          <div class="form-group" style="grid-column:1/-1"><label>Supervisor (for verification)</label><select name="supervisor_id"><option value="">â€” None â€”</option>${supOpts}</select></div>
         </div>`,
         async () => {
           await API('/api/student/case-logs', { method:'POST', body: JSON.stringify(formData()) });
@@ -808,7 +808,7 @@ window.deleteCase = async (id) => {
   await API(`/api/student/case-logs/${id}`,{method:'DELETE'}); loadSection('caseLogs');
 };
 
-// ── PROCEDURE LOGBOOK (Student View) ─────────────────────────────
+// â”€â”€ PROCEDURE LOGBOOK (Student View) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 sections.procedureLogs = async c => {
   const render = async () => {
     const [d, sup] = await Promise.all([
@@ -820,10 +820,10 @@ sections.procedureLogs = async c => {
       <div class="section-header"><h2>Procedure Logbook</h2>
         <button class="btn small" id="addProcBtn">+ Log Procedure</button></div>
       <div class="stat-cards">
-        <div class="stat-card"><div class="label">🔧 Total</div><div class="value">${counts.total||0}</div></div>
-        <div class="stat-card"><div class="label">👁️ Observed</div><div class="value">${counts.observed||0}</div></div>
-        <div class="stat-card"><div class="label">🤝 Assisted</div><div class="value" style="color:var(--primary)">${counts.assisted||0}</div></div>
-        <div class="stat-card"><div class="label">✋ Performed</div><div class="value" style="color:var(--success)">${counts.performed||0}</div></div>
+        <div class="stat-card"><div class="label">ðŸ”§ Total</div><div class="value">${counts.total||0}</div></div>
+        <div class="stat-card"><div class="label">ðŸ‘ï¸ Observed</div><div class="value">${counts.observed||0}</div></div>
+        <div class="stat-card"><div class="label">ðŸ¤ Assisted</div><div class="value" style="color:var(--primary)">${counts.assisted||0}</div></div>
+        <div class="stat-card"><div class="label">âœ‹ Performed</div><div class="value" style="color:var(--success)">${counts.performed||0}</div></div>
       </div>
       <div class="card" style="padding:0;overflow:auto">
       <table><thead><tr><th>Date</th><th>Procedure</th><th>Dept</th><th>Patient</th><th>Level</th><th>Supervisor</th><th>Status</th><th></th></tr></thead>
@@ -835,12 +835,12 @@ sections.procedureLogs = async c => {
         <td>${badge(p.level, p.level==='performed'?'green':p.level==='assisted'?'blue':'gray')}</td>
         <td>${fmt(p.supervisor_name)}</td>
         <td>${badge(p.status, p.status==='verified'?'green':p.status==='rejected'?'red':'yellow')}</td>
-        <td class="actions">${p.status!=='verified'?`<button class="icon-btn" onclick="deleteProc(${p.id})">🗑️</button>`:''}</td>
+        <td class="actions">${p.status!=='verified'?`<button class="icon-btn" onclick="deleteProc(${p.id})">ðŸ—‘ï¸</button>`:''}</td>
       </tr>`).join('')||'<tr><td colspan="8" class="empty-msg">No procedure entries yet. Click "+ Log Procedure" to begin.</td></tr>'}
       </tbody></table></div>`;
 
     $('addProcBtn').addEventListener('click', () => {
-      const supOpts = (sup.items||[]).map(s=>`<option value="${s.id}">${s.full_name} (${s.department||'—'})</option>`).join('');
+      const supOpts = (sup.items||[]).map(s=>`<option value="${s.id}">${s.full_name} (${s.department||'â€”'})</option>`).join('');
       openModal('Log a Procedure', `
         <div class="form-grid">
           <div class="form-group"><label>Date *</label><input name="procedure_date" type="date" required/></div>
@@ -848,7 +848,7 @@ sections.procedureLogs = async c => {
           <div class="form-group"><label>Department</label><input name="department" placeholder="e.g. General Medicine"/></div>
           <div class="form-group"><label>Patient Code</label><input name="patient_code" placeholder="e.g. IPD-1234"/></div>
           <div class="form-group"><label>Level *</label><select name="level" required><option value="observed">Observed</option><option value="assisted">Assisted</option><option value="performed">Performed</option></select></div>
-          <div class="form-group"><label>Supervisor (for verification)</label><select name="supervisor_id"><option value="">— None —</option>${supOpts}</select></div>
+          <div class="form-group"><label>Supervisor (for verification)</label><select name="supervisor_id"><option value="">â€” None â€”</option>${supOpts}</select></div>
           <div class="form-group" style="grid-column:1/-1"><label>Remarks</label><textarea name="remarks" rows="2"></textarea></div>
         </div>`,
         async () => {
@@ -864,9 +864,9 @@ window.deleteProc = async (id) => {
   await API(`/api/student/procedure-logs/${id}`,{method:'DELETE'}); loadSection('procedureLogs');
 };
 
-// ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function loadSection(sec){
-  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loading…</div>';
+  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loadingâ€¦</div>';
   const fn=sections[sec];if(fn)fn(c);else c.innerHTML=`<div class="empty-msg">${sec} coming soon.</div>`;
 }
 fetch('/api/me').then(r=>r.json()).then(d=>{
@@ -879,7 +879,7 @@ fetch('/api/student/profile').then(r=>r.json()).then(d=>{
 }).catch(()=>{});
 $('logoutBtn').addEventListener('click',async()=>{ await fetch('/api/logout',{method:'POST'}); location.href='/login.html'; });
 
-// ── NOTIFICATION BELL (top-right) ────────────────────────────────
+// â”€â”€ NOTIFICATION BELL (top-right) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const notifWrap = $('notifWrap');
 const notifBell = $('notifBell');
 const notifPanel = $('notifPanel');
@@ -907,7 +907,7 @@ async function refreshNotifBell() {
           <div class="notif-msg">${fmt(n.message)}</div>
           <div class="notif-time">${fmtDate(n.sent_at)}</div>
         </div>
-        ${n.is_read ? '' : `<button class="notif-read-btn" onclick="event.stopPropagation();bellMarkRead(${n.id})" title="Mark as read">✓</button>`}
+        ${n.is_read ? '' : `<button class="notif-read-btn" onclick="event.stopPropagation();bellMarkRead(${n.id})" title="Mark as read">âœ“</button>`}
       </div>
     `).join('') || '<div class="empty-msg" style="padding:24px;text-align:center">No notifications</div>';
   } catch (e) { /* silent */ }
@@ -943,5 +943,6 @@ setInterval(refreshNotifBell, 60000); // poll every minute
 
 loadSection('dashboard');
 </script>
-</body>
+<script src="/js/mobile.js"></script></body>
 </html>
+

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>JJMMC ERP · Principal</title>
+<title>JJMMC ERP Â· Principal</title>
 <link rel="stylesheet" href="/css/style.css"/>
 <style>
 /* Principal portal page-specific overrides (global UI in style.css) */
@@ -16,7 +16,7 @@
     <div class="brand-logo">JJ</div>
     <div>
       <h1 style="font-size:14px">Principal Portal <span class="prog-badge prog-badge-ug">UG</span></h1>
-      <small>JJMMC · Undergraduate Programme</small>
+      <small>JJMMC Â· Undergraduate Programme</small>
     </div>
   </div>
   <nav class="nav" id="sideNav">
@@ -46,7 +46,7 @@
       <button class="btn small secondary" id="logoutBtn">Logout</button>
     </div>
   </div>
-  <div class="content" id="appContent"><div class="empty-msg">Loading…</div></div>
+  <div class="content" id="appContent"><div class="empty-msg">Loadingâ€¦</div></div>
 </section>
 </div>
 <div class="modal-overlay" id="modalOverlay">
@@ -57,8 +57,8 @@
 <script>
 const $=id=>document.getElementById(id);
 const API=async(url,opts={})=>{const r=await fetch(url,{headers:{'Content-Type':'application/json'},...opts});const j=await r.json().catch(()=>({}));if(!r.ok){alert(j.error||'Error');throw new Error(j.error);}return j;};
-const fmt=v=>v==null?'—':v;
-const fmtDate=d=>d?d.split('T')[0]:'—';
+const fmt=v=>v==null?'â€”':v;
+const fmtDate=d=>d?d.split('T')[0]:'â€”';
 const badge=(t,c='gray')=>`<span class="badge ${c}">${t}</span>`;
 const statusBadge=s=>{const m={present:'green',absent:'red',published:'green',open:'green',active:'green',closed:'red',F:'red',A:'green','A+':'green'};return badge(s,m[s]||'blue');};
 let modalCb=null;
@@ -100,11 +100,11 @@ sections.overview = async c => {
     <div class="grid cols-2" style="margin-top:14px">
       <div class="card">
         <div class="sub">Fees Collected</div>
-        <div style="font-size:28px;font-weight:500;color:var(--success)">₹${(t.fees_collected||0).toLocaleString()}</div>
+        <div style="font-size:28px;font-weight:500;color:var(--success)">â‚¹${(t.fees_collected||0).toLocaleString()}</div>
         <div style="margin-top:10px">
           <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Last 6 months</div>
           <table style="width:100%"><tbody>
-          ${(d.fee_monthly||[]).slice().reverse().map(m=>`<tr><td style="font-size:12px;color:var(--muted)">${m.month}</td><td style="text-align:right;font-weight:500">₹${(m.total||0).toLocaleString()}</td></tr>`).join('')||'<tr><td class="empty-msg">No data</td></tr>'}
+          ${(d.fee_monthly||[]).slice().reverse().map(m=>`<tr><td style="font-size:12px;color:var(--muted)">${m.month}</td><td style="text-align:right;font-weight:500">â‚¹${(m.total||0).toLocaleString()}</td></tr>`).join('')||'<tr><td class="empty-msg">No data</td></tr>'}
           </tbody></table>
         </div>
       </div>
@@ -130,8 +130,8 @@ sections.overview = async c => {
         <h3 style="margin:0 0 10px;font-size:14px">Low Attendance (&lt; 75%)</h3>
         ${(d.low_attendance||[]).length? `
           <table><thead><tr><th>Name</th><th>Roll</th><th>Year</th><th>%</th></tr></thead>
-          <tbody>${d.low_attendance.map(s=>`<tr><td>${s.full_name}</td><td>${fmt(s.roll_no)}</td><td>${s.mbbs_year?'Y'+s.mbbs_year:'—'}</td><td style="color:var(--danger);font-weight:500">${s.pct}%</td></tr>`).join('')}</tbody></table>
-        `:'<div class="empty-msg" style="padding:10px">All students ≥ 75%</div>'}
+          <tbody>${d.low_attendance.map(s=>`<tr><td>${s.full_name}</td><td>${fmt(s.roll_no)}</td><td>${s.mbbs_year?'Y'+s.mbbs_year:'â€”'}</td><td style="color:var(--danger);font-weight:500">${s.pct}%</td></tr>`).join('')}</tbody></table>
+        `:'<div class="empty-msg" style="padding:10px">All students â‰¥ 75%</div>'}
       </div>
     </div>
 
@@ -171,7 +171,7 @@ sections.subjects = async c => {
         ${(d.by_year||[]).map(y=>`<div class="card" style="text-align:center"><div class="sub">${yearLabel(y.year)}</div><div style="font-size:24px;font-weight:500">${y.c}</div></div>`).join('')}
       </div>
       <div class="filter-bar">
-        <input placeholder="Search name or code…" id="subQ" value="${q}" style="flex:1;max-width:260px"/>
+        <input placeholder="Search name or codeâ€¦" id="subQ" value="${q}" style="flex:1;max-width:260px"/>
         <select id="subYear">
           <option value="">All Years</option>
           ${[1,2,3,4,5].map(n=>`<option value="${n}" ${String(year)===String(n)?'selected':''}>${yearLabel(n)}</option>`).join('')}
@@ -186,9 +186,9 @@ sections.subjects = async c => {
       <tbody>${d.items.map(s=>`<tr>
         <td><strong>${s.code}</strong></td><td>${s.name}</td>
         <td>${fmt(s.department)}</td>
-        <td>${s.mbbs_year?badge(yearLabel(s.mbbs_year),'blue'):'—'}</td>
+        <td>${s.mbbs_year?badge(yearLabel(s.mbbs_year),'blue'):'â€”'}</td>
         <td>${fmt(s.semester)}</td><td>${s.credits||3}</td>
-        <td>${s.dept_category?badge(s.dept_category,'gray'):'—'}</td>
+        <td>${s.dept_category?badge(s.dept_category,'gray'):'â€”'}</td>
       </tr>`).join('')||'<tr><td colspan="7" class="empty-msg">No subjects</td></tr>'}
       </tbody></table></div>`;
     $('subQ').addEventListener('input',e=>{ q=e.target.value; render(); });
@@ -204,7 +204,7 @@ sections.students = async c => {
     const d=await API(`/api/principal/students?q=${encodeURIComponent(q)}`);
     c.innerHTML=`
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="margin:0">Students (${d.items.length})</h2></div>
-      <div class="filter-bar"><input placeholder="Search name/roll…" id="stuSearch" value="${q}" style="flex:1;max-width:280px"/></div>
+      <div class="filter-bar"><input placeholder="Search name/rollâ€¦" id="stuSearch" value="${q}" style="flex:1;max-width:280px"/></div>
       <div class="card" style="padding:0;overflow:auto">
       <table><thead><tr><th>Roll No</th><th>Name</th><th>Dept</th><th>Sem</th><th>Phone</th><th>Email</th></tr></thead>
       <tbody>${d.items.map(s=>`<tr><td>${fmt(s.roll_no)}</td><td>${s.full_name}</td><td>${fmt(s.department)}</td><td>${fmt(s.semester)}</td><td>${fmt(s.phone)}</td><td>${fmt(s.email)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty-msg">None</td></tr>'}
@@ -228,7 +228,7 @@ sections.attendance = async c => {
   const d=await API('/api/principal/attendance');
   c.innerHTML=`
     <div style="margin-bottom:16px"><h2 style="margin:0">Attendance Overview</h2></div>
-    ${d.low_attendance.length?`<div class="alert warning">⚠️ ${d.low_attendance.length} student(s) below 75% attendance</div>`:''}
+    ${d.low_attendance.length?`<div class="alert warning">âš ï¸ ${d.low_attendance.length} student(s) below 75% attendance</div>`:''}
     <div class="grid cols-2">
       <div class="card">
         <h3 style="margin:0 0 10px;font-size:14px">By Course</h3>
@@ -274,14 +274,14 @@ sections.fees = async c => {
   c.innerHTML=`
     <div style="margin-bottom:16px"><h2 style="margin:0">Fees Overview</h2></div>
     <div class="grid cols-2" style="margin-bottom:14px">
-      <div class="card"><div class="sub">Total Collected</div><div style="font-size:28px;font-weight:500;color:var(--success)">₹${(d.total_paid||0).toLocaleString()}</div></div>
+      <div class="card"><div class="sub">Total Collected</div><div style="font-size:28px;font-weight:500;color:var(--success)">â‚¹${(d.total_paid||0).toLocaleString()}</div></div>
       <div class="card"><h3 style="margin:0 0 10px;font-size:14px">By Fee Type</h3>
-        ${d.by_type.map(t=>`<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px"><span>${t.fee_type}</span><strong>₹${(t.total||0).toLocaleString()}</strong></div>`).join('')}
+        ${d.by_type.map(t=>`<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px"><span>${t.fee_type}</span><strong>â‚¹${(t.total||0).toLocaleString()}</strong></div>`).join('')}
       </div>
     </div>
     <div class="card" style="padding:0;overflow:auto">
     <table><thead><tr><th>Student</th><th>Roll No</th><th>Fee Type</th><th>Amount</th><th>Date</th></tr></thead>
-    <tbody>${d.recent.map(p=>`<tr><td>${p.full_name}</td><td>${fmt(p.roll_no)}</td><td>${p.fee_type}</td><td>₹${p.amount?.toLocaleString()}</td><td>${fmtDate(p.paid_on)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty-msg">None</td></tr>'}
+    <tbody>${d.recent.map(p=>`<tr><td>${p.full_name}</td><td>${fmt(p.roll_no)}</td><td>${p.fee_type}</td><td>â‚¹${p.amount?.toLocaleString()}</td><td>${fmtDate(p.paid_on)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty-msg">None</td></tr>'}
     </tbody></table></div>`;
 };
 
@@ -293,7 +293,7 @@ sections.notices = async c => {
     <div style="display:flex;flex-direction:column;gap:8px">
       ${d.items.map(n=>`<div class="card">
         <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <strong>${n.title}</strong><span style="font-size:11px;color:var(--muted)">${fmtDate(n.created_at)} · ${badge(n.audience,'gray')}</span>
+          <strong>${n.title}</strong><span style="font-size:11px;color:var(--muted)">${fmtDate(n.created_at)} Â· ${badge(n.audience,'gray')}</span>
         </div>
         <div style="font-size:13px;color:var(--muted)">${n.body}</div>
       </div>`).join('')||'<div class="empty-msg">No notices</div>'}
@@ -319,7 +319,7 @@ sections.reports = async c => {
       </div>
       <div class="card"><h3 style="margin:0 0 10px;font-size:14px">Monthly Fee Collection</h3>
         <table><thead><tr><th>Month</th><th>Amount</th></tr></thead>
-        <tbody>${d.fee_monthly.map(r=>`<tr><td>${r.month}</td><td>₹${r.total?.toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="2" class="empty-msg">No data</td></tr>'}</tbody></table>
+        <tbody>${d.fee_monthly.map(r=>`<tr><td>${r.month}</td><td>â‚¹${r.total?.toLocaleString()}</td></tr>`).join('')||'<tr><td colspan="2" class="empty-msg">No data</td></tr>'}</tbody></table>
       </div>
       <div class="card"><h3 style="margin:0 0 10px;font-size:14px">Grade Distribution</h3>
         <table><thead><tr><th>Grade</th><th>Count</th></tr></thead>
@@ -333,7 +333,7 @@ sections.reports = async c => {
 };
 
 function loadSection(sec){
-  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loading…</div>';
+  const c=$('appContent');c.innerHTML='<div class="empty-msg">Loadingâ€¦</div>';
   const fn=sections[sec];if(fn)fn(c);else c.innerHTML=`<div class="empty-msg">${sec} coming soon.</div>`;
 }
 fetch('/api/me').then(r=>r.json()).then(d=>{
@@ -344,5 +344,6 @@ fetch('/api/me').then(r=>r.json()).then(d=>{
 $('logoutBtn').addEventListener('click',async()=>{ await fetch('/api/logout',{method:'POST'}); location.href='/login.html'; });
 loadSection('overview');
 </script>
-</body>
+<script src="/js/mobile.js"></script></body>
 </html>
+
