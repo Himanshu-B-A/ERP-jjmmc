@@ -11,13 +11,15 @@ require('dotenv').config();
 const admin = require('firebase-admin');
 
 function buildCredential() {
-  // Option 1: path to a service-account JSON file on disk (local dev only)
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    const fs = require('fs');
-    if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
-      return admin.credential.applicationDefault();
-    }
-    // File doesn't exist (e.g. on a remote server) — fall through to next option
+  // Option 1: three discrete env vars (preferred for production / Render / Vercel)
+  const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } =
+    process.env;
+  if (FIREBASE_PROJECT_ID && FIREBASE_CLIENT_EMAIL && FIREBASE_PRIVATE_KEY) {
+    return admin.credential.cert({
+      projectId:   FIREBASE_PROJECT_ID,
+      clientEmail: FIREBASE_CLIENT_EMAIL,
+      privateKey:  FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    });
   }
 
   // Option 2: the entire JSON pasted into a single env var
@@ -32,22 +34,21 @@ function buildCredential() {
     }
   }
 
-  // Option 3: three discrete env vars
-  const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } =
-    process.env;
-  if (FIREBASE_PROJECT_ID && FIREBASE_CLIENT_EMAIL && FIREBASE_PRIVATE_KEY) {
-    return admin.credential.cert({
-      projectId: FIREBASE_PROJECT_ID,
-      clientEmail: FIREBASE_CLIENT_EMAIL,
-      // Newlines in the PEM key survive `.env` files as literal "\n"; unescape.
-      privateKey: FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    });
+  // Option 3: path to a service-account JSON file on disk (local dev only)
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    const fs = require('fs');
+    if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
+      return admin.credential.applicationDefault();
+    }
+    throw new Error(
+      `GOOGLE_APPLICATION_CREDENTIALS points to a file that does not exist: ` +
+      process.env.GOOGLE_APPLICATION_CREDENTIALS
+    );
   }
 
   throw new Error(
-    'Firebase credentials missing. Set GOOGLE_APPLICATION_CREDENTIALS, ' +
-      'FIREBASE_SERVICE_ACCOUNT, or the FIREBASE_PROJECT_ID/CLIENT_EMAIL/PRIVATE_KEY trio. ' +
-      'See README.md → "Firebase setup".'
+    'Firebase credentials missing. Set FIREBASE_PROJECT_ID + FIREBASE_CLIENT_EMAIL + ' +
+    'FIREBASE_PRIVATE_KEY in your environment variables.'
   );
 }
 
